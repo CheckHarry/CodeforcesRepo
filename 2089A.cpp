@@ -17,18 +17,28 @@ using namespace  std;
 using ll = long long;
 
 
-vector<int> primes;
+unordered_set<int> primes;
 
 
 void solve(int n) {
-    vector<bool> used(int)
+    vector<bool> used(n + 1,0);
+    used[2] = 1;
+    vector<int> ans;
+    ans.push_back(2);
+
+    ll s = 2;
+    ll count = 1;
+    while (true) {
+        ll avg = s / count;
+        if (s % count) avg += 1;
+    }
 }
 
 int main() {
     vector<int> primes_b(100005, 1);
     for (int i = 2; i < primes_b.size(); i ++) {
         if (primes_b[i]) {
-            primes.push_back(i);
+            primes.insert(i);
         }
         for (int j = 2 * i; j < primes_b.size(); j += i) {
             primes_b[j] = 0;
