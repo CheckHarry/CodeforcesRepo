@@ -38,25 +38,23 @@ void solve(int a, int b, int c, ll k) {
     }
 
     ll s = k;
-    ll base = pow10(a - 1);
-    ll i = -1;
-    while ((s > 0) && (base + i) < pow10(a)) {
-        i ++;
-        s = s - count(a,b,c,base + i);
+    ll A = pow10(a - 1) - 1;
+
+    while ((s > 0) && A < pow10(a)) {
+        s = s - count(a,b,c,++A);
     }
 
-    if (base + i >= pow10(a)) {
+    if (A >= pow10(a)) {
         cout << "-1\n";
         return;
     }
 
-    cout << base + i << " + " << min(pow10(b) - 1, pow10(c) - 1 - base - i) + s << " = " << min(pow10(b) - 1, pow10(c) - 1 - base - i) +  base + i  + s<< '\n';
+    ll B = min(pow10(b) - 1, pow10(c) - 1 - A) + s;
+    cout << A << " + " << B << " = " << A + B << '\n';
 
 }
 
 int main() {
-    solve(6 ,6 ,6 ,99999999999);
-    return;
     int tests;
     cin >> tests;
     while (tests--) {
