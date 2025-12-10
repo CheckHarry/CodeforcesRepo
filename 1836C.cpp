@@ -50,16 +50,13 @@ void solve(int a, int b, int c, ll k) {
         return;
     }
 
-    if (s == 0) {
-        cout << base + i << " + " << min(pow10(b) - 1, pow10(c) - 1 - base - i) << " = " << min(pow10(b) - 1, pow10(c) - 1 - base - i) +  base + i << '\n';
-    } else  {
-        //cout <<
-        cout << base + i << " + " << min(pow10(b) - 1, pow10(c) - 1 - base - i) + s << " = " << min(pow10(b) - 1, pow10(c) - 1 - base - i) + base + i + s << '\n';
-    }
+    cout << base + i << " + " << min(pow10(b) - 1, pow10(c) - 1 - base - i) + s << " = " << min(pow10(b) - 1, pow10(c) - 1 - base - i) +  base + i  + s<< '\n';
 
 }
 
 int main() {
+    solve(6 ,6 ,6 ,99999999999);
+    return;
     int tests;
     cin >> tests;
     while (tests--) {
