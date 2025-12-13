@@ -50,37 +50,26 @@ void solve(const std::string& s) {
             cnt[pos[0]] -= 2;
             set(left++, pos[0] + 'a');
             set(right--, pos[0] + 'a');
-        } else if (pos.size() == 2) {
-            int test_count = 0;
-            for (int i = pos[0] + 1; i < 26; i ++) {
-                if (i != pos[1])
-                    test_count += cnt[i];
-            }
-            if (cnt[pos[1]] >= 2) {
-                if (test_count == 0) {
-                    set(left++, pos[1] + 'a');
-                    set(right--, pos[1] + 'a');
-                    cnt[pos[1]] -= 2;
-                    continue;
-                } 
-                
-                set(left++, pos[1] + 'a');
-                set(right--, pos[0] + 'a');
-                cnt[pos[0]] --;
-                cnt[pos[1]] --;
-                break;  
-            } else {
-                set(left++, pos[1] + 'a');
-                set(right--, pos[0] + 'a');
-                cnt[pos[0]] --;
-                cnt[pos[1]] --;
-                break;
-            }
-            
-        } else {
-            std::cout << "ERROR\n";
-            return;
+            continue;
+        } 
+
+
+        int test_count = 0;
+        for (int i = pos[0] + 1; i < 26; i ++) {
+            if (i != pos[1])
+                test_count += cnt[i];
         }
+        if (cnt[pos[1]] >= 2 && test_count == 0) {
+            set(left++, pos[1] + 'a');
+            set(right--, pos[1] + 'a');
+            cnt[pos[1]] -= 2;
+            continue;
+        } 
+        set(left++, pos[1] + 'a');
+        set(right--, pos[0] + 'a');
+        cnt[pos[0]] --;
+        cnt[pos[1]] --;
+        break;
     }
         
 
@@ -94,13 +83,10 @@ void solve(const std::string& s) {
         }
     }
 
-    std::string s1(ans.begin(), ans.end());
-    std::string s2(ans.begin(), ans.end());
-    reverse(s2.begin(),s2.end());
+    for (char c: ans) {
+        cout << c;
+    } cout << '\n';
 
- 
-        cout << s1 << '\n';
-    
 }
 
 int main() {
