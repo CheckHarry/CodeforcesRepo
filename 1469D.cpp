@@ -28,23 +28,17 @@ void solve(int n) {
     vector<op> vv2;
     
     int nn = n;
-    while (nn >= 10) {
+    while (nn >= 3) {
         s.insert(nn);
         int tmp = nn;
         nn = static_cast<int>(sqrt(nn)) + 1;
         vv.push_back({tmp, nn});
         vv.push_back({tmp, nn});
     }
+    //cout << " nn is " << nn << '\n';
     s.insert(nn);
     s.insert(nn - 1);
-    vv.push_back({nn , nn - 1});
-    int tt = nn - 1;
-    while (tt > 1) {
-        vv.push_back({nn - 1, nn});
-        tt = static_cast<int>(ceil(double(tt) / 2.0));
-    }
-    
-    
+
     for (int i = 1; i <= n; i ++) {
         if (s.find(i) == s.end()) {
             vv2.push_back({i, i + 1});
@@ -58,7 +52,6 @@ void solve(int n) {
     for (const auto &op : vv) {
         cout << op.x << " " << op.y << '\n';
     }
-
 }
 
 int main() {
