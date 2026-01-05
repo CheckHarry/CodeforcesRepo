@@ -18,26 +18,26 @@ using ll = long long;
 
 
 static constexpr ll modnum = 1000000007;
+int mapp[100001];
+int nums[100001];
 void solve() {
     int n;
     cin >> n;
-    vector<int> map(n);
-    vector<int> nums(n);
     int nn = n;
     int a;
     int pos = 0;
     while (nn--) {
         cin >> a;
         nums[pos] = a;
-        map[a] = pos++;
+        mapp[a] = pos++;
     }
     int left = INT32_MAX;
     int right = INT32_MIN;
-    ll cnt = 0;
+    
     ll ans = 1;
     for (int i = 0; i < n; i ++) {
-        left = min(left, map[i]);
-        right = max(right, map[i]);
+        left = min(left, mapp[i]);
+        right = max(right, mapp[i]);
         if (i == nums[left] || i == nums[right]) {
             continue;
         }
