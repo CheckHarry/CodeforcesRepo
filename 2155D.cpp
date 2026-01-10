@@ -17,9 +17,6 @@
 using namespace std;
 using ll = long long;
 
-
-std::random_device rd;
-std::mt19937 g(rd());
  
 
 void solve() {
