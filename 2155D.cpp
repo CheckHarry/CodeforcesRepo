@@ -10,50 +10,69 @@
 #include <utility>
 #include <array>
 #include <math.h>
-#include <iomanip> 
+#include <iomanip>
 #include <queue>
 #include <random>
 
 using namespace std;
 using ll = long long;
 
-
 std::random_device rd;
 std::mt19937 g(rd());
- 
 
-void solve() {
+/*
+n / k  * (k * (k - 1)) / 2 = n * (k - 1) / 2
+*/
+
+void solve()
+{
     int n;
     cin >> n;
 
-    vector<pair<int,int>> v;
-    for (int i = 1; i <= n; i ++) {
-        for (int j = i + 1; j <= n; j ++) {
-            v.push_back({i,j});
-        }
-    }
-
-    std::shuffle(v.begin(), v.end(), g);
-
-    for (auto &[i,j] : v) {
-        cout << i << " " << j << std::endl;
-        int ans;
-        cin >> ans;
-        if (ans == 1) {
-            return;
-        }
-        if (ans == -1) {
-            cout << "ERROR!";
-            std::exit(1);
-            return;
+    set<pair<int, int>> q;
+    for (int i = 2; i <= n; i++)
+    {
+        int e = i;
+        for (int j = 1; j <= n; j += e)
+        {
+            if (j + e - 1 > n) break;
+            //cout << j << " , " << j + e << '\n';
+            for (int a = j; a < j + e; a++)
+            {
+                for (int b = a + 1; b < j + e; b++)
+                {
+                    //cout << j << " , " << j + e - 1 << '\n';
+                    if (a <= n && b <= n && (q.find({a,b}) == q.end()))
+                    {
+                        cout << a << " " << b << std::endl;
+                        int ans;
+                        cin >> ans;
+                        if (ans == 1)
+                        {
+                            return;
+                        }
+                        q.insert({a,b});
+                        if (ans == -1)
+                        {
+                            cout << "ERROR!";
+                            std::exit(1);
+                            return;
+                        }
+                    }
+                    else
+                        continue;
+                }
+            }
         }
     }
 }
 
-int main() {
+int main()
+{
     int tests;
     cin >> tests;
-    while (tests--) {
+    while (tests--)
+    {
         solve();
     }
 }
