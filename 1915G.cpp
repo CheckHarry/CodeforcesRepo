@@ -63,7 +63,7 @@ void solve() {
     }
     
     pq.push({0,{1,slownesses[1]}});
-    distances[{1,slownesses[1]}] = 0;
+    distances[1][slownesses[1]] = 0;
 
     while (!pq.empty()) {
         auto [distance, node] = pq.top();
@@ -74,8 +74,8 @@ void solve() {
             auto next_index_slowness = slownesses[next_index];
             ll next_slowness = (next_index_slowness < slowness) ? next_index_slowness : slowness;
             ll next_distance = distance + w * slowness;
-            if (distances[{next_index,next_slowness}] > next_distance) {
-                distances[{next_index, next_slowness}] = next_distance;
+            if (distances[next_index][next_slowness] > next_distance) {
+                distances[next_index][next_slowness] = next_distance;
                 pq.push({next_distance, {next_index, next_slowness}});
             }
         }
