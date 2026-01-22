@@ -34,7 +34,7 @@ struct node {
     }
 };
 
-
+ll distances[1001][1001];
 void solve() {
     int n, m;
     cin >> n >> m;
@@ -55,7 +55,12 @@ void solve() {
 
 
     priority_queue<pair<ll,node>, std::vector<pair<ll,node>>, std::greater<pair<ll,node>>> pq;
-    map<node,ll> distances;
+    
+    for (int i = 0;i < 1001;i ++){
+        for (int j = 0;j < 1001;i ++) {
+            distances[i][j] = std::numeric_limits<ll>::max();
+        }
+    }
     
     pq.push({0,{1,slownesses[1]}});
     distances[{1,slownesses[1]}] = 0;
@@ -69,10 +74,7 @@ void solve() {
             auto next_index_slowness = slownesses[next_index];
             ll next_slowness = (next_index_slowness < slowness) ? next_index_slowness : slowness;
             ll next_distance = distance + w * slowness;
-            if (distances.find({next_index,next_slowness}) == distances.end()) {
-                distances[{next_index, next_slowness}] = next_distance;
-                pq.push({next_distance, {next_index, next_slowness}});
-            } else if (distances[{next_index,next_slowness}] > next_distance) {
+            if (distances[{next_index,next_slowness}] > next_distance) {
                 distances[{next_index, next_slowness}] = next_distance;
                 pq.push({next_distance, {next_index, next_slowness}});
             }
@@ -80,10 +82,8 @@ void solve() {
     }
 
     ll ans = std::numeric_limits<ll>::max();
-    for (const auto& [node,d] : distances) {
-        if (node.index == n) {
-            ans = min(d,ans);
-        }
+    for (int j = 0;j < 1001;j ++) {
+        ans = min(distances[n][j],ans);
     }
 
     cout << ans << '\n';
