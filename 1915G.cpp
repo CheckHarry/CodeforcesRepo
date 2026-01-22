@@ -34,7 +34,7 @@ struct node {
     }
 };
 
-ll distances[1001][1001];
+
 void solve() {
     int n, m;
     cin >> n >> m;
@@ -56,11 +56,7 @@ void solve() {
 
     priority_queue<pair<ll,node>, std::vector<pair<ll,node>>, std::greater<pair<ll,node>>> pq;
     
-    for (int i = 0;i < 1001;i ++){
-        for (int j = 0;j < 1001;i ++) {
-            distances[i][j] = std::numeric_limits<ll>::max();
-        }
-    }
+    vector<vector<ll>> distances(n + 1,vector<ll>(1001, std::numeric_limits<ll>::max()));
     
     pq.push({0,{1,slownesses[1]}});
     distances[1][slownesses[1]] = 0;
