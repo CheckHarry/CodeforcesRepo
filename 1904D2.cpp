@@ -26,49 +26,35 @@ struct range {
 
 
 
-vector<range> get_range_frm(const vector<int> &vec, bool le) {
+vector<range> get_range_frm(const vector<int> &vec, bool ge) {
     int n = vec.size();
     vector<range> ranges(n);
-    vector<pair<int,int>> st;
 
-    for (int i = 0;i < n;i ++) {
-        auto pred = [=] () {
-            if (le) {
-                return st.back().first <= vec[i];
-            } else {
-                return st.back().first > vec[i];
-            }
-        };
-        while (!st.empty() && pred()) {
-            ranges[st.back().second].right = i - 1;
-            st.pop_back();
+    auto comp = [&] (int a, int b) {
+        if (ge) {
+            return a >= b;
+        } else {
+            return a <= b;
         }
+    };
 
+    for (int i = 1;i < n;i ++) {
+        int k = i - 1;
+        while (k >= 0 && comp(vec[i],vec[k])) {
+            k = ranges[k].left - 1;
+        }
+        ranges[i].left = k + 1;
         ranges[i].index = i;
-        st.push_back({vec[i], i});
     }    
 
-    while (!st.empty()) {
-        ranges[st.back().second].right = n - 1;
-        st.pop_back();
-    }
-
     for (int i = n - 1;i >= 0;i --) {
-        auto pred = [=] () {
-            if (le) {
-                return st.back().first <= vec[i];
-            } else {
-                return st.back().first > vec[i];
-            }
-        };
-        while (!st.empty() && pred()) {
-            ranges[st.back().second].left = i + 1;
-            st.pop_back();
+        int k = i + 1;
+        while (k < n && comp(vec[i],vec[k])) {
+            k = ranges[k].right + 1;
         }
-
+        ranges[i].right = k - 1;
         ranges[i].index = i;
-        st.push_back({vec[i], i});
-    }
+    }    
 
     return ranges;
 }
@@ -89,14 +75,8 @@ void solve() {
     auto ranges = get_range_frm(frm, true);
     auto ranges2 = get_range_frm(dst, false);
 
-    for (int i = 0;i < ranges2.size();i ++) {
-        cout << i << " " << ranges2[i].left << " " << ranges2[i].right << '\n';
-        //mapp[frm[i]].push_back(ranges2[i]);
-    }
-
     unordered_map<int,vector<range>> mapp;
     for (int i = 0;i < ranges.size();i ++) {
-        //cout << i << " " << ranges[i].left << " " << ranges[i].right << '\n';
         mapp[frm[i]].push_back(ranges[i]);
     }
 
@@ -106,6 +86,7 @@ void solve() {
             if (ranges2[i].left > range.index || ranges2[i].right < range.index) continue;
             if (range.left <= i && i <= range.right) {
                 found = true;
+                break;
             }
         }
 
