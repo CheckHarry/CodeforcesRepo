@@ -14,26 +14,9 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
-
+#include <cstring>
 using namespace std;
 using ll = long long;
-
-
-
-vector<ll> find_primes() {
-    vector<ll> bitmap(100005);
-    for (int i = 2;i < 100005;i ++) {
-        if (bitmap[i]) continue;
-        for (int j = 2 * i;j < 100005;j += i) {
-            bitmap[j] = 1;
-        }
-    }
-    vector<ll> res;
-    for (int i = 2;i < 100005;i ++) {
-        if (!bitmap[i]) res.push_back(i);
-    }
-    return res;
-}
 
 ll gcd(ll a,ll b) {
     if (a > b) return gcd(b, a);
@@ -43,21 +26,27 @@ ll gcd(ll a,ll b) {
     return gcd(a, b % a);
 }
 
-static vector<ll> primes = find_primes();
+bool dp[101][101];
+bool check(int n, int m, const vector<vector<ll>>& matrix,int c) {
+    memset(dp,0,sizeof(dp));
+    for (int i = 0;i < n;i ++) {
+        for (int j = 0;j < m;j ++) {
+            if (i == 0 && j == 0) {
+                dp[0][0] = true;
+            }
 
+            if (i > 0) {
+                dp[i][j] = dp[i][j] || dp[i - 1][j] && ((matrix[i][j] % c) == 0);
+            }
 
-vector<int> get_factors_index(ll a) {
-    vector<int> index;
-    for (int i = 0;i < primes.size();i ++) {
-        if (a % primes[i] == 0) {
-            index.push_back(i);
-            while (a % primes[i] == 0) {
-                a /= primes[i];
+            if (j > 0) {
+                dp[i][j] = dp[i][j] || dp[i][j - 1] && ((matrix[i][j] % c) == 0);
             }
         }
-        if (a == 1) break;
     }
-    return index;
+
+    return dp[n-1][m-1];
+
 }
 
 void solve() {
@@ -72,36 +61,29 @@ void solve() {
         matrix.push_back(row);
     }
 
-    vector<vector<unordered_set<ll>>> dp(n,vector<unordered_set<ll>>(m));
-    for (int i = 0;i < n;i ++) {
-        for (int j = 0;j < m;j ++) {
-
-            ll num = matrix[i][j];
-            
-            if (i == 0 && j == 0) {
-                dp[i][j].insert(num);
-            }
-
-            if (i > 0) {
-                for (const auto& v : dp[i - 1][j]) {
-                    dp[i][j].insert(gcd(num, v));
-                }
-            }
-
-            if (j > 0) {
-                for (const auto& v : dp[i][j - 1]) {
-                    dp[i][j].insert(gcd(num, v));
-                }
+    ll start_val = matrix[0][0];
+    ll end_val = matrix[n - 1][m - 1];
+    ll common_gcd = gcd(start_val, end_val);
+ 
+    
+    vector<ll> divisors;
+    for (ll i = 1; i * i <= common_gcd; ++i) {
+        if (common_gcd % i == 0) {
+            divisors.push_back(i);
+            if (i * i != common_gcd) {
+                divisors.push_back(common_gcd / i);
             }
         }
     }
-
-    ll ans = 1;
-    for (const auto& v : dp.back().back()) {
-        ans = max(ans, v);
+ 
+    sort(divisors.rbegin(), divisors.rend());
+ 
+    for (ll d : divisors) {
+        if (check(n, m, matrix, d)) {
+            cout << d << "\n";
+            return;
+        }
     }
-
-    cout << ans << '\n';
 }
 
 
