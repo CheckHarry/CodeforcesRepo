@@ -33,14 +33,19 @@ void solve() {
         cin >> permutation[i];
     }
 
-    vector<int> mapping(n + 1); 
-    for (int i = 1;i <= n;i ++) {
-        mapping[i] = i;
+    vector<pair<ll, int>> sorted_mushrooms(n + 1);
+    for(int i=1; i<=n; i++) {
+        sorted_mushrooms[i] = {powers[i], i};
     }
-    sort(mapping.begin() + 1,mapping.end(),[&](int x,int y) {return powers[x] < powers[y];});
+    sort(sorted_mushrooms.begin() + 1, sorted_mushrooms.end());
+
+    vector<int> original_to_sorted(n + 1);
+    for(int i=1; i<=n; i++) {
+        original_to_sorted[sorted_mushrooms[i].second] = i;
+    }
 
     for (int &i : permutation) {
-        i = mapping[i];
+        i = original_to_sorted[i];
     }
 
     sort(powers.begin() + 1, powers.end());
@@ -64,7 +69,7 @@ void solve() {
         }
 
         while (cnt < k) {
-            for (;pos >= 0;pos --) {
+            for (;pos >= 1;pos --) {
                 if (!banned[pos] && !used[pos]) {
                     used[pos] = 1;
                     cnt ++;
@@ -72,12 +77,8 @@ void solve() {
                     break;
                 }
             }
-            if (pos < 0) break;
+            if (pos <= 0) break;
         }
-
-        // for (int i : used ) {
-        //     cout <<i << " ";
-        // } cout << '\n';
 
         if (cnt == k) {
             ll tmp_strength = k * min_power;
