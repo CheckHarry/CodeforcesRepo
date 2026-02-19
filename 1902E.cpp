@@ -21,8 +21,8 @@ using ll = long long;
  
 
 struct TrieNode {
-    int s = 0;
-    int cnt = 0;
+    ll s = 0;
+    ll cnt = 0;
     int children[27];
     TrieNode(int s_, int cnt_) : s(s_),cnt(cnt_) {
         for (int i = 0;i < 27;i ++) {
@@ -34,7 +34,7 @@ struct TrieNode {
 
 struct Trie {
     TrieNode root{0,0};
-    vector<TrieNode> nodes{1000001, TrieNode{0,0}};
+    vector<TrieNode> nodes{1000500, TrieNode{0,0}};
     int pos = 0;
     int alloc() {
         return pos++;
@@ -63,6 +63,7 @@ struct Trie {
     }
 
     TrieNode* get_node(int i) {
+        if (i == -1) return nullptr;
         return &nodes[i];
     }
 };
@@ -90,13 +91,13 @@ void solve() {
             for (int cho = 0;cho < 26;cho ++) {
                 if (c == (cho + 'a')) continue;
                 if (cur->children[cho] == -1) continue;
-                ans += (i + 1) * trie.get_node(cho)->cnt + trie.get_node(cho)->s;
+                ans += (i + 1) * trie.get_node(cur->children[cho])->cnt + trie.get_node(cur->children[cho])->s;
             }
             if (cur->children[26] != -1) {
-                ans += (i + 1) * trie.get_node(26)->cnt;
+                ans += (i + 1) * trie.get_node(cur->children[26])->cnt;
             }
 
-            cur = trie.get_node(c - 'a');
+            cur = trie.get_node(cur->children[c - 'a']);
             if (!cur) break;
         }
         if (cur) {
