@@ -82,7 +82,7 @@ void solve() {
     for (const auto & s : vs) {
         trie.push(s);
     }
-
+ 
     ll ans = 0;
     for (const auto& s : vs) {
         auto cur = &trie.root;
